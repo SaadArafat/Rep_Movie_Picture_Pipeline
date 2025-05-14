@@ -1,6 +1,5 @@
 name: CI Pipeline
 
-
 on:
   push:
     branches: [ main ]
@@ -29,4 +28,6 @@ jobs:
       - name: Run tests
         run: |
           cd starter/backend
-          python -m unittest test_app.py
+          python test_app.py
+
+
