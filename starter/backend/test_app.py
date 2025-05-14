@@ -1,4 +1,4 @@
-from . import app
+import app
 import os
 
 
