@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ECS Cluster + Service + Task Definition
+
+Parameters:
+  VpcId:
+    Type: String
+  SubnetId:
+    Type: String
+  ImageUrl:
+    Type: String
+
+Resources:
+  Cluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: movie-cluster
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: movie-task
+      Cpu: '256'
+      Memory: '512'
+      NetworkMode: awsvpc
+      RequiresCompatibilities: [FARGATE]
+      ExecutionRoleArn: arn:aws:iam::<your-account-id>:role/ecsTaskExecutionRole
+      ContainerDefinitions:
+        - Name: movie-container
+          Image: !Ref ImageUrl
+          PortMappings:
+            - ContainerPort: 80
+
+  Service:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref Cluster
+      DesiredCount: 1
+      LaunchType: FARGATE
+      TaskDefinition: !Ref TaskDefinition
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets: [ !Ref SubnetId ]
+          SecurityGroups: []
+
+Outputs:
+  ServiceName:
+    Value: !Ref Service
