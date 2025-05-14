@@ -1,7 +1,8 @@
-import app
+import sys
 import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-
+import app
 def test_movies_endpoint_returns_200():
     with app.test_client() as client:
         status_code = os.getenv("FAIL_TEST", 200)
