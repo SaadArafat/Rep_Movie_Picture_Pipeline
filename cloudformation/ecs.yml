@@ -23,7 +23,7 @@ Resources:
       Memory: '512'
       NetworkMode: awsvpc
       RequiresCompatibilities: [FARGATE]
-      ExecutionRoleArn: arn:aws:iam::<your-account-id>:role/ecsTaskExecutionRole
+      ExecutionRoleArn: arn:aws:iam::143158164124:role/ecsTaskExecutionRole
       ContainerDefinitions:
         - Name: movie-container
           Image: !Ref ImageUrl
