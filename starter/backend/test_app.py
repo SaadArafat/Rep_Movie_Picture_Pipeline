@@ -3,6 +3,17 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 import app
+import unittest
+
+class TestApp(unittest.TestCase):
+    def test_index(self):
+        tester = app.app.test_client(self)
+        response = tester.get('/')
+        self.assertEqual(response.status_code, 200)
+
+if __name__ == '__main__':
+    unittest.main()
+
 def test_movies_endpoint_returns_200():
     with app.test_client() as client:
         status_code = os.getenv("FAIL_TEST", 200)
