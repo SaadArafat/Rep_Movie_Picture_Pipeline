@@ -2,40 +2,52 @@ name: CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
 
 jobs:
   deploy:
-    name: Deploy to Amazon ECS
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-    - name: Log in to Amazon ECR
-      uses: aws-actions/amazon-ecr-login@v1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-    - name: Build, Tag, and Push Docker image to ECR
-      env:
-        ECR_REPOSITORY: movie-app
-        IMAGE_TAG: latest
-      run: |
-        docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
-        docker tag $ECR_REPOSITORY:$IMAGE_TAG ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+      - name: Build and Push Backend Image
+        run: |
+          docker build -t ${{ secrets.ECR_REPOSITORY_BACKEND }}:${{ secrets.IMAGE_TAG }} -f ./starter/backend/Dockerfile ./starter/backend
+          docker push ${{ secrets.ECR_REPOSITORY_BACKEND }}:${{ secrets.IMAGE_TAG }}
 
-    - name: Deploy to ECS
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: movie-app-task-definition.json
-        service: movie-app-service
-        cluster: movie-app-cluster
-        wait-for-service-stability: true
+      - name: Build and Push Frontend Image
+        run: |
+          docker build -t ${{ secrets.ECR_REPOSITORY_FRONTEND }}:${{ secrets.IMAGE_TAG }} -f ./starter/frontend/Dockerfile ./starter/frontend
+          docker push ${{ secrets.ECR_REPOSITORY_FRONTEND }}:${{ secrets.IMAGE_TAG }}
+
+      # Optional: Deploy to Kubernetes
+      # Uncomment and configure this block if you have a kubeconfig setup
+      # - name: Set up kubectl
+      #   uses: azure/setup-kubectl@v3
+      #   with:
+      #     version: 'v1.29.0'
+
+      # - name: Configure kubeconfig
+      #   run: |
+      #     mkdir -p ~/.kube
+      #     echo "${{ secrets.KUBECONFIG_DATA }}" | base64 -d > ~/.kube/config
+
+      # - name: Apply Kubernetes manifests
+      #   run: kubectl apply -f k8s/
