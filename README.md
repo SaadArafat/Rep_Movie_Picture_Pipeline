@@ -4,7 +4,6 @@ You've been brought on as the DevOps resource for a development team that manage
 
 
 
-
 The team's project is comprised of 2 application.
 
 1. A frontend UI built written in Typescript, using the React framework
