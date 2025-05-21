@@ -5,7 +5,6 @@ import unittest
 # Add current dir to path so app.py can be found
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-
 import app  # Make sure app.py is in the same folder
 
 class TestApp(unittest.TestCase):
