@@ -1,104 +1,77 @@
-# 🎬 Movie Picture Pipeline – Capstone Project
+# 🎬 Movie Picture Pipeline
 
-## 🚀 Project Overview
-
-This is the Movie Picture Pipeline project for the Udacity Cloud DevOps Engineer Nanodegree. The goal is to implement a full CI/CD pipeline to automatically build, test, and deploy a Dockerized frontend and backend application to AWS infrastructure.
-
-This project demonstrates DevOps practices including GitHub Actions workflows, Docker containerization, AWS EC2 deployment, and integration of CI/CD pipelines.
+This project implements a CI/CD pipeline using GitHub Actions to automatically test and deploy a containerized full-stack movie web app (frontend + backend) to an AWS EC2 instance.
 
 ---
 
-## 🧱 Architecture Overview
+## 🚀 Live Application URLs
 
+- **Frontend (React)**: http://107.20.183.9:3000/manifest.json  
+- **Backend (Flask API)**: http://107.20.183.9:5000/movies  
+
+These endpoints confirm the application is up and running on EC2.
+
+---
+
+## 🛠️ Project Structure
+
+```bash
+starter/
+├── backend/     # Flask API
+├── frontend/    # React UI
+└── docker-compose.yml
+```
+
+---
+
+## ⚙️ CI/CD Pipelines
+
+GitHub Actions workflows are defined in `.github/workflows/` and configured as follows:
+
+| Workflow File           | Purpose                  |
+|-------------------------|--------------------------|
+| `frontend-ci.yaml`      | Lint, test, and cache frontend dependencies |
+| `frontend-cd.yaml`      | Deploy React app to EC2 via SSH |
+| `backend-ci.yaml`       | Lint, test, and cache Python dependencies |
+| `backend-cd.yaml`       | Deploy Flask app to EC2 via SSH |
+
+### ✅ Caching Implemented
+Each CI workflow uses `actions/cache@v3` to restore and save dependencies:
+- Frontend: `~/.npm`
+- Backend: `~/.cache/pip`
+
+---
+
+## 💻 Deployment Details
+
+- **EC2**: Amazon Linux 2023, Docker & Docker Compose installed  
+- **Docker Compose**: Orchestrates both services using the `docker-compose.yml` file  
+- **Auto Restart**: Containers use `restart: always` to stay active  
+
+```bash
+docker-compose up -d --build
+```
+
+---
+
+## 📦 Technologies Used
+
+- **Frontend**: React
+- **Backend**: Flask + Python
 - **CI/CD**: GitHub Actions
-- **Containers**: Docker for both frontend and backend
-- **Deployment**: AWS EC2 instance
-- **Image Repository**: AWS Elastic Container Registry (ECR)
-- **Orchestration**: Docker Compose
+- **Infrastructure**: AWS EC2 + Docker
 
 ---
 
-## ⚙️ CI/CD Workflows
+## 📄 Notes for Reviewers
 
-Located in `.github/workflows/`:
-
-### ✅ `ci.yml` – Continuous Integration
-- Runs on every push or pull request
-- Builds and tests backend and frontend via Docker Compose
-
-### ✅ `cd.yml` – Continuous Deployment
-- Builds Docker images for backend and frontend
-- Pushes images to AWS ECR
-- Connects to EC2 via SSH and deploys containers with Docker Compose
-
-Both workflows are working and were successfully triggered — verified in GitHub Actions tab.
+All four required GitHub workflows are implemented and functional.  
+Deployment is accessible at the provided IP above.  
+Logs are available in the GitHub Actions tab of this repo.
 
 ---
 
-## 📦 Project Structure
+## 🧑‍💻 Author
 
-```
-Rep_Movie_Picture_Pipeline/
-├── starter/
-│   ├── backend/             # Flask-based backend API
-│   ├── frontend/            # React frontend
-│   ├── docker-compose.yml   # Compose for local and EC2 deployment
-└── .github/
-    └── workflows/
-        ├── ci.yml           # Continuous Integration
-        └── cd.yml           # Continuous Deployment
-```
-
----
-
-## 🌐 Live Application URLs
-
-- 🔗 Frontend: [http://54.173.57.195:3000/manifest.json](http://54.173.57.195:3000/manifest.json)
-- 🔗 Backend: [http://54.173.57.195:5000/movies](http://54.173.57.195:5000/movies)
-
----
-
-## 📡 Deployment Status
-
-An AWS EC2 instance has been created and configured with open ports:
-- 22 (SSH)
-- 3000 (Frontend)
-- 5000 (Backend)
-
-Docker and Docker Compose were installed, and both containers are running successfully on the EC2 instance.
-
----
-
-## 🧪 How to Run Locally
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/SaadArafat/Rep_Movie_Picture_Pipeline.git
-cd Rep_Movie_Picture_Pipeline/starter
-```
-
-### 2. Run the application
-```bash
-docker-compose up --build
-```
-
-### 3. Access the app
-- Frontend: [http://localhost:3000](http://localhost:3000)
-- Backend: [http://localhost:5000/movies](http://localhost:5000/movies)
-
----
-
-## 👤 Author
-
-**Saad Arafat**  
-Capstone Project – Cloud DevOps Engineer Nanodegree  
-GitHub: [@SaadArafat](https://github.com/SaadArafat)
-
----
-
-## 📝 Reviewer Notes
-
-- CI/CD implementation is complete and functional via GitHub Actions
-- Docker containers for frontend and backend are deployed to EC2
-- Public URLs are accessible and working
-- Please refer to workflows and logs in the repository for validation
+Saad Arafat  
+Udacity Cloud DevOps Engineer Nanodegree
