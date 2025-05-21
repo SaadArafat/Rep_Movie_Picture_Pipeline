@@ -53,8 +53,8 @@ Rep_Movie_Picture_Pipeline/
 
 ## 🌐 Live Application URLs
 
-- 🔗 Frontend: [http://3.83.102.81:3000/manifest.json](http://3.83.102.81:3000/manifest.json)
-- 🔗 Backend: [http://3.83.102.81:5000/movies](http://3.83.102.81:5000/movies)
+- 🔗 Frontend: [http://54.173.57.195:3000/manifest.json](http://54.173.57.195:3000/manifest.json)
+- 🔗 Backend: [http://54.173.57.195:5000/movies](http://54.173.57.195:5000/movies)
 
 ---
 
@@ -91,7 +91,7 @@ docker-compose up --build
 ## 👤 Author
 
 **Saad Arafat**  
-Movie Picture Pipeline Project – Cloud DevOps Engineer Nanodegree  
+Capstone Project – Cloud DevOps Engineer Nanodegree  
 GitHub: [@SaadArafat](https://github.com/SaadArafat)
 
 ---
