@@ -1,6 +1,6 @@
-# Movie Picture Pipeline Project
+# 🎬 Movie Picture Pipeline – Capstone Project
 
-## Project Overview
+## 🚀 Project Overview
 
 This is the Movie Picture Pipeline project for the Udacity Cloud DevOps Engineer Nanodegree. The goal is to implement a full CI/CD pipeline to automatically build, test, and deploy a Dockerized frontend and backend application to AWS infrastructure.
 
@@ -42,7 +42,7 @@ Rep_Movie_Picture_Pipeline/
 ├── starter/
 │   ├── backend/             # Flask-based backend API
 │   ├── frontend/            # React frontend
-│   └── docker-compose.yml   # Compose for local and EC2 deployment
+│   ├── docker-compose.yml   # Compose for local and EC2 deployment
 └── .github/
     └── workflows/
         ├── ci.yml           # Continuous Integration
@@ -51,14 +51,21 @@ Rep_Movie_Picture_Pipeline/
 
 ---
 
+## 🌐 Live Application URLs
+
+- 🔗 Frontend: [http://3.83.102.81:3000/manifest.json](http://3.83.102.81:3000/manifest.json)
+- 🔗 Backend: [http://3.83.102.81:5000/movies](http://3.83.102.81:5000/movies)
+
+---
+
 ## 📡 Deployment Status
 
-An AWS EC2 instance has been created and configured.  
-Security group rules allow necessary ports (22, 3000, 5000).  
-Docker and Docker Compose have been set up on the EC2 instance.
+An AWS EC2 instance has been created and configured with open ports:
+- 22 (SSH)
+- 3000 (Frontend)
+- 5000 (Backend)
 
-> ⚠️ Due to time constraints, the backend and frontend services are **not fully accessible via public URLs** at the time of submission.  
-> However, CI/CD pipelines have been implemented and verified through GitHub Actions logs.
+Docker and Docker Compose were installed, and both containers are running successfully on the EC2 instance.
 
 ---
 
@@ -77,21 +84,21 @@ docker-compose up --build
 
 ### 3. Access the app
 - Frontend: [http://localhost:3000](http://localhost:3000)
-- Backend: [http://localhost:5000](http://localhost:5000)
+- Backend: [http://localhost:5000/movies](http://localhost:5000/movies)
 
 ---
 
 ## 👤 Author
 
 **Saad Arafat**  
-Capstone Project – Cloud DevOps Engineer Nanodegree  
+Movie Picture Pipeline Project – Cloud DevOps Engineer Nanodegree  
 GitHub: [@SaadArafat](https://github.com/SaadArafat)
 
 ---
 
 ## 📝 Reviewer Notes
 
-- CI/CD implementation complete and functional
-- Workflows have been triggered and validated
-- EC2 deployment environment is configured
-- Frontend/backend currently not exposed publicly due to time constraints
+- CI/CD implementation is complete and functional via GitHub Actions
+- Docker containers for frontend and backend are deployed to EC2
+- Public URLs are accessible and working
+- Please refer to workflows and logs in the repository for validation
