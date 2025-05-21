@@ -3,8 +3,11 @@ name: Backend CI
 on:
   push:
     paths:
-      - "starter/backend/**"
-      - ".github/workflows/backend-ci.yaml"
+      - 'starter/backend/**'
+      - '.github/workflows/backend-ci.yaml'
+  pull_request:
+    paths:
+      - 'starter/backend/**'
 
 jobs:
   build:
@@ -14,21 +17,23 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
       - name: Restore cache
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: ${{ runner.os }}-pip-
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
+          key: ${{ runner.os }}-pip-backend-${{ hashFiles('**/starter/backend/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-backend-
 
       - name: Install dependencies
         run: |
           cd starter/backend
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run tests
