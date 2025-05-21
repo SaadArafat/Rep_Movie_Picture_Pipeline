@@ -9,18 +9,18 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Deploy Backend to EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.EC2_HOST }}
+          host: ${{ secrets.EC2_PUBLIC_IP }}
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd Rep_Movie_Picture_Pipeline/starter
+            cd /home/ec2-user/Rep_Movie_Picture_Pipeline/starter
+            docker-compose down
             git pull origin main
             docker-compose up -d --build
