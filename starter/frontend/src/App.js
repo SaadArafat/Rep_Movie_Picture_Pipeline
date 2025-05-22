@@ -6,54 +6,44 @@ function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(process.env.REACT_APP_API_URL || "http://localhost:5000/movies")
+    fetch(process.env.REACT_APP_MOVIE_API_URL || "http://localhost:5000/movies")
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch movies");
-        }
+        if (!response.ok) throw new Error("Failed to fetch");
         return response.json();
       })
       .then((data) => {
-        console.log("Fetched movies:", data);
-        setMovies(data.movies || []); // Fallback in case API returns { movies: [...] }
+        console.log("Fetched data:", data);
+        setMovies(data.movies || data || []);
         setLoading(false);
       })
-      .catch((error) => {
-        console.error("Error fetching movies:", error);
-        setError(error.message);
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setError(err.message);
         setLoading(false);
       });
   }, []);
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "Arial, sans-serif" }}>
+    <div style={{ padding: "2rem", fontFamily: "Arial" }}>
       <h1>🎬 Movie List</h1>
-
-      {loading && <p>Loading movies...</p>}
-
+      {loading && <p>Loading...</p>}
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
-
-      {!loading && !error && movies.length === 0 && (
-        <p>No movies found.</p>
-      )}
-
-      {!loading && !error && movies.length > 0 && (
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          {movies.map((movie) => (
-            <li
-              key={movie.id}
-              style={{
-                margin: "10px 0",
-                padding: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-              }}
-            >
-              {movie.title}
-            </li>
-          ))}
-        </ul>
-      )}
+      {!loading && movies.length === 0 && <p>No movies found.</p>}
+      <ul style={{ listStyle: "none", padding: 0 }}>
+        {movies.map((movie, index) => (
+          <li
+            key={movie.id || index}
+            style={{
+              padding: "10px",
+              margin: "5px 0",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+            }}
+          >
+            {movie.title}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
