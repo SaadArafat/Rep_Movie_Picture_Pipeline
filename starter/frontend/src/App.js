@@ -4,7 +4,7 @@ function App() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    fetch('http://107.20.183.9/:5000/movies') // Replace with your EC2 IP
+    fetch('http://107.20.183.9:5000/movies') // Replace with your EC2 IP
       .then((res) => res.json())
       .then((data) => {
         if (data.movies) {
