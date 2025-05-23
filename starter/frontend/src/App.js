@@ -3,25 +3,27 @@ import React, { useEffect, useState } from "react";
 function App() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(process.env.REACT_APP_MOVIE_API_URL)
-      .then((res) => {
+    const fetchMovies = async () => {
+      try {
+        const res = await fetch(process.env.REACT_APP_MOVIE_API_URL);
         if (!res.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error(`HTTP error! status: ${res.status}`);
         }
-        return res.json();
-      })
-      .then((data) => {
+        const data = await res.json();
+        console.log("Fetched movies:", data);
         setMovies(data.movies || []);
-        setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Fetch error:", err);
-        setError("Failed to load movies.");
+        setError("Unable to load movies. Please try again.");
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchMovies();
   }, []);
 
   return (
@@ -32,14 +34,16 @@ function App() {
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {!loading && !error && (
-        <ul style={{ paddingLeft: "1.2rem" }}>
+      {!loading && !error && movies.length > 0 && (
+        <ul style={{ listStyleType: "disc", paddingLeft: "1.5rem" }}>
           {movies.map((movie) => (
-            <li key={movie.id} style={{ marginBottom: "0.5rem" }}>
-              {movie.title}
-            </li>
+            <li key={movie.id}>{movie.title}</li>
           ))}
         </ul>
+      )}
+
+      {!loading && !error && movies.length === 0 && (
+        <p>No movies found.</p>
       )}
     </div>
   );
