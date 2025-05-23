@@ -4,7 +4,7 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = process.env.REACT_APP_MOVIE_API_URL || 'http://localhost:5000/movies';
+  const API_URL = 'http://107.20.183.9:5000/movies';
 
   useEffect(() => {
     fetch(API_URL)
