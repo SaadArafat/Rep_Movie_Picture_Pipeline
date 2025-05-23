@@ -6,7 +6,7 @@ This project implements a CI/CD pipeline using GitHub Actions to automatically t
 
 ## 🚀 Live Application URLs
 
-- **Frontend (React)**: http://107.20.183.9:3000/manifest.json  
+- **Frontend (React)**: http://107.20.183.9:3000/
 - **Backend (Flask API)**: http://107.20.183.9:5000/movies  
 
 These endpoints confirm the application is up and running on EC2.
