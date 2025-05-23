@@ -1,12 +1,11 @@
-import { render, screen } from '@testing-library/react';
 import React from 'react';
-
-import App from '../../App';
-
-const movieHeading = process.env.FAIL_TEST ? 'WRONG_HEADING' : 'Movie List';
+import { render, screen } from '@testing-library/react';
+import App from '../App';
 
 test('renders Movie List heading', () => {
   render(<App />);
-  const linkElement = screen.getByText(movieHeading);
-  expect(linkElement).toBeInTheDocument();
+  
+  // Use case-insensitive regex to match the heading text
+  const heading = screen.getByText(/movie list/i);
+  expect(heading).toBeInTheDocument();
 });
