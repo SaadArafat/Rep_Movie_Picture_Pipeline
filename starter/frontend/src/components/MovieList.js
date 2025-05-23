@@ -1,29 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
-function MovieList({ onMovieClick }) {
+const API_URL = process.env.REACT_APP_MOVIE_API_URL;
+
+function MovieList() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_MOVIE_API_URL}/movies`).then((response) => {
-      setMovies(response.data.movies);
-    });
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(data => {
+        // Ensure the data structure is correct
+        if (data && data.movies) {
+          setMovies(data.movies);
+        } else {
+          console.error("Invalid data format:", data);
+          setMovies([]);
+        }
+      })
+      .catch(err => {
+        console.error("Failed to fetch movies:", err);
+        setMovies([]);
+      });
   }, []);
 
   return (
-    <ul>
-      {movies.map((movie) => (
-        <li className="movieItem" key={movie.id} onClick={() => onMovieClick(movie)}>
-          {movie.title}
-        </li>
-      ))}
-    </ul>
+    <div style={{ padding: '2rem', fontFamily: 'Arial' }}>
+      <h1>Movie List</h1>
+      {movies.length === 0 ? (
+        <p>Loading...</p>
+      ) : (
+        <ul style={{ listStyle: 'none', padding: 0 }}>
+          {movies.map(movie => (
+            <li key={movie.id}>🎬 {movie.title}</li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
-
-MovieList.propTypes = {
-  onMovieClick: PropTypes.func.isRequired,
-};
 
 export default MovieList;
