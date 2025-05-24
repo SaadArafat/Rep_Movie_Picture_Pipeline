@@ -1,29 +1,36 @@
-
 import React from "react";
-import axios from "axios";
 
-function MovieDetails({ movie }) {
-  const [details, setDetails] = React.useState(null);
+function MovieList() {
+  const [movies, setMovies] = React.useState([]);
+  const [error, setError] = React.useState("");
 
   React.useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_MOVIE_API_URL}/movies/${movie.id}`)
-      .then((response) => {
-        setDetails(response.data);
+    fetch(process.env.REACT_APP_MOVIE_API_URL)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setMovies(data);
+        } else {
+          setError("Invalid data format:");
+        }
       })
-      .catch((error) => {
-        console.error("Error fetching movie details:", error);
+      .catch((err) => {
+        console.error("Failed to fetch movies:", err);
+        setError("Unable to load movies.");
       });
-  }, [movie]);
-
-  if (!details) return <p>Loading movie details...</p>;
+  }, []);
 
   return (
     <div>
-      <h2>{details.title}</h2>
-      <p>{details.description}</p>
+      <h1>Movie List</h1>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <ul style={{ fontSize: "2rem", fontFamily: "Arial" }}>
+        {movies.map((movie) => (
+          <li key={movie.id}>{movie.title}</li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-export default MovieDetails;
+export default MovieList;
