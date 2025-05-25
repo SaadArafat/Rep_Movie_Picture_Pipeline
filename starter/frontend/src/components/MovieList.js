@@ -1,40 +1,35 @@
-import React, { useEffect, useState } from 'react';
 
-const API_URL = process.env.REACT_APP_MOVIE_API_URL;
+import React from "react";
 
 function MovieList() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = React.useState([]);
+  const [error, setError] = React.useState("");
 
-  useEffect(() => {
-    fetch(API_URL)
-      .then(res => res.json())
-      .then(data => {
-        // Ensure the data structure is correct
-        if (data && data.movies) {
-          setMovies(data.movies);
+  React.useEffect(() => {
+    fetch(process.env.REACT_APP_MOVIE_API_URL)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setMovies(data);
         } else {
-          console.error("Invalid data format:", data);
-          setMovies([]);
+          setError("Invalid data format:");
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Failed to fetch movies:", err);
-        setMovies([]);
+        setError("Unable to load movies.");
       });
   }, []);
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'Arial' }}>
+    <div>
       <h1>Movie List</h1>
-      {movies.length === 0 ? (
-        <p>Loading...</p>
-      ) : (
-        <ul style={{ listStyle: 'none', padding: 0 }}>
-          {movies.map(movie => (
-            <li key={movie.id}>🎬 {movie.title}</li>
-          ))}
-        </ul>
-      )}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <ul style={{ fontSize: "2rem", fontFamily: "Arial" }}>
+        {movies.map((movie) => (
+          <li key={movie.id}>{movie.title}</li>
+        ))}
+      </ul>
     </div>
   );
 }
