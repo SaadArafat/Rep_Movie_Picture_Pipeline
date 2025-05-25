@@ -2,18 +2,16 @@ from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return 'Hello from the Movie App!'
 
-@app.route('/movies/')
-def movies():
-    sample_movies = [
-        {"title": "Inception"},
-        {"title": "The Matrix"},
-        {"title": "Interstellar"}
+@app.route("/movies", methods=["GET"])
+def get_movies():
+    movies = [
+        {"id": "123", "title": "Top Gun: Maverick"},
+        {"id": "456", "title": "Sonic the Hedgehog"},
+        {"id": "789", "title": "A Quiet Place"},
     ]
-    return jsonify({"movies": sample_movies})
+    return jsonify(movies)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=5000)
