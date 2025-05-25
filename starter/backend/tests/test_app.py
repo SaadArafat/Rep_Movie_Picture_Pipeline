@@ -1,4 +1,10 @@
-    - name: Run Tests
-      run: |
-        cd starter/backend
-        python -m unittest discover tests
+import unittest
+
+class TestApp(unittest.TestCase):
+
+    def test_sanity(self):
+        self.assertEqual(1, 1)
+
+
+if __name__ == "__main__":
+    unittest.main()
