@@ -1,6 +1,6 @@
-import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import MovieList from '../MovieList';
+import React from "react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react';
+import MovieList from "../MovieList";
 
 beforeEach(() => {
   // Mock fetch response
@@ -11,7 +11,7 @@ beforeEach(() => {
           movies: [
             { id: '1', title: 'Top Gun: Maverick' },
             { id: '2', title: 'Sonic the Hedgehog' },
-            { id: '3', title: 'A Quiet Place' }
+            { id: '3', title: 'A Quiet Place' },
           ]
         })
     })
@@ -22,7 +22,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-test('renders Movie List heading and movies', async () => {
+test("renders Movie List heading and movies", async () => {
   render(<MovieList />);
 
   expect(screen.getByText(/Movie List/i)).toBeInTheDocument();
