@@ -8,6 +8,7 @@ function App() {
   React.useEffect(() => {
     const api = process.env.REACT_APP_MOVIE_API_URL;
 
+    
     console.log("Fetching from:", api);
     fetch(api)
       .then((response) => response.json())
